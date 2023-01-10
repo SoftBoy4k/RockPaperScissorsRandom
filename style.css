@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#field {
+    width: 700px;
+    height: 700px;
+    margin: 3% auto;
+    border: 1px solid black;
+    position: relative;
+}
+
+.rock {
+    position: absolute;
+}
+
+.paper {
+    position: absolute;
+    left: 100px;
+    top: 0px;
+}
+
+.scissors {
+    position: absolute;
+    left: 300px;
+    top: 300px;
+}
