@@ -24,6 +24,6 @@
 
 .scissors {
     position: absolute;
-    left: 300px;
-    top: 300px;
+    left: 0px;
+    top: 100px;
 }

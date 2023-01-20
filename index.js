@@ -6,8 +6,6 @@ const scissorsIdList = [];
 
 let RPSItems = [];
 
-creatingRPSItems(3, 3, 3);                             // creating rocks, papers and scisors 
-
 function rockCreater() {
     const id = rockIdList.length + 1;
     rockIdList.push(id);
@@ -59,7 +57,6 @@ class RockPaperScissors {
     changePosition(nextX, nextY) {
     
         if (this.x !== nextX) {
-            console.log("x =", this.x)
            if ( this.leftBound < nextX  && nextX < this.rightBound) {
                 this.x = nextX;
            } else {
@@ -114,24 +111,51 @@ class RockPaperScissors {
         }
     
     }
+
+    getWinner(el) {
+        const elClass1 = el.element.classList[0]; 
+        const elClass2 = this.element.classList[0]; 
+        if (elClass1 === elClass2) {
+            return;
+        } else if ((elClass1 === "rock" && elClass2 === "paper")) {
+            this.removeElement(el.element);                                                          // choosing which element to change
+            RPSItems.push(new RockPaperScissors(paperCreater()));
+            return RPSItems[RPSItems.length - 1].moving();
+        } else if ((elClass1 === "rock" && elClass2 === "scissors")) {
+            this.removeElement(el.element);                                                          // choosing which element to change
+            RPSItems.push(new RockPaperScissors(rockCreater()));
+            return RPSItems[RPSItems.length - 1].moving();
+        } else if ((elClass1 === "paper" && elClass2 === "scissors")) {
+            this.removeElement(el.element);                                                          // choosing which element to change
+            RPSItems.push(new RockPaperScissors(scissorsCreater()));
+            return RPSItems[RPSItems.length - 1].moving();
+        }
+    }
+    
+    removeElement(el) {
+        let elIndex = 0;
+        RPSItems.forEach((elem, i) => elem.element === el ? elIndex = i : undefined);
+        RPSItems.splice(elIndex, 1);
+        el.remove();
+    }
     
     moving() {
         const myInterval = setInterval(() => {
+            const contacts = this.contacts()
+            if (contacts.length) {
+                contacts.forEach(el => this.getWinner(el))
+            }
             this.changeDirection();
             this.element.style.left = `${this.x}px`;
             this.element.style.top = `${this.y}px`;
-        }, 200)
+        }, 1000)
     
         setTimeout(() => {
             clearInterval(myInterval);
         }, 10000)
     }
 
-    change(element) {
-        console.dir(this.element, element)
-    }
-
-    contact() {
+    contacts() {
         return RPSItems.filter(({x, y}) => Math.abs(this.x - x) - 32 <= 0 && Math.abs(this.y - y) - 32 <= 0)             // object interection
     }
 
@@ -151,4 +175,6 @@ function creatingRPSItems(rockCount = 0, paperCount = 0, scissorsCount = 0) {
     }
 }
 
-// RPSItems.forEach(e => e.moving());
+creatingRPSItems(3, 3, 3);                             // creating rocks, papers and scisors 
+
+RPSItems.forEach(e => e.moving());
